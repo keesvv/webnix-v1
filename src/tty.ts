@@ -1,6 +1,6 @@
 import { Component, Target } from "./lib/component";
-import { IO, NullIO, StdIO } from "./lib/io";
-import { btostr } from "./lib/strconv";
+import { IO, StdIO } from "./lib/io";
+import { btostr, strtob } from "./lib/strconv";
 import "./tty.scss";
 
 export class TTY implements Component, StdIO {
@@ -26,14 +26,14 @@ export class TTY implements Component, StdIO {
     this.tty = tty;
     this.framebuffer = framebuffer;
 
-    this.stdin = new NullIO();
-    this.stderr = new NullIO();
     this.stdout = {
       write: this.writeToBuffer.bind(this),
       read() {
         throw new Error("not implemented");
       },
     };
+    this.stdin = this.stdout;
+    this.stderr = this.stdout;
   }
 
   private writeToBuffer(data: byte[]): number {
@@ -42,6 +42,14 @@ export class TTY implements Component, StdIO {
   }
 
   render(target: Target): void {
+    target.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        this.stdin.write([0x0a]); // newline
+        return;
+      }
+      this.stdin.write(strtob(e.key));
+    });
+
     target.appendChild(this.tty);
   }
 }
