@@ -1,0 +1,17 @@
+.tty {
+  padding: 5px;
+  font-family: monospace;
+  color: white;
+
+  .framebuffer {
+    display: inline;
+  }
+
+  .cursor {
+    width: 8px;
+    height: 14px;
+    vertical-align: middle;
+    display: inline-block;
+    background: rgb(230, 230, 230);
+  }
+}
