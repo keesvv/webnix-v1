@@ -1,7 +1,8 @@
 import { TTY } from "./tty";
-import { strtob } from "./lib/strconv";
+import { Init } from "./bin/init";
 import "./main.scss";
 
 const tty = new TTY();
 tty.render(document.body);
-tty.write(strtob("Hello, world!"));
+
+new Init(tty).main();
