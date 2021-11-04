@@ -1,6 +1,6 @@
-import { Component, Target } from "./lib/component";
-import { IO, StdIO } from "./lib/io";
-import { btostr, strtob } from "./lib/strconv";
+import { Component, Target } from "../../lib/component";
+import { IO, StdIO } from "../../lib/io";
+import { btostr, strtob } from "../../lib/strconv";
 import "./tty.scss";
 
 export class TTY implements Component, StdIO {
