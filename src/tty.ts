@@ -1,11 +1,15 @@
 import { Component, Target } from "./lib/component";
-import { IO } from "./lib/io";
+import { IO, NullIO, StdIO } from "./lib/io";
 import { btostr } from "./lib/strconv";
 import "./tty.scss";
 
-export class TTY implements Component, IO {
+export class TTY implements Component, StdIO {
   private readonly tty: HTMLDivElement;
   private readonly framebuffer: HTMLDivElement;
+
+  readonly stdin: IO;
+  readonly stdout: IO;
+  readonly stderr: IO;
 
   constructor() {
     const tty = document.createElement("div");
@@ -21,13 +25,18 @@ export class TTY implements Component, IO {
 
     this.tty = tty;
     this.framebuffer = framebuffer;
+
+    this.stdin = new NullIO();
+    this.stderr = new NullIO();
+    this.stdout = {
+      write: this.writeToBuffer.bind(this),
+      read() {
+        throw new Error("not implemented");
+      },
+    };
   }
 
-  read(): number[] {
-    throw new Error("Method not implemented.");
-  }
-
-  write(data: byte[]): number {
+  private writeToBuffer(data: byte[]): number {
     this.framebuffer.innerText += btostr(data);
     return data.length;
   }
