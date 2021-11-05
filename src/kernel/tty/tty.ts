@@ -1,11 +1,12 @@
+import { Framebuffer, FramebufferIO } from ".";
 import { Component, Target } from "../../lib/component";
 import { IO, StdIO } from "../../lib/io";
-import { btostr, strtob } from "../../lib/strconv";
+import { strtob } from "../../lib/strconv";
 import "./tty.scss";
 
 export class TTY implements Component, StdIO {
   private readonly tty: HTMLDivElement;
-  private readonly framebuffer: HTMLDivElement;
+  private readonly framebuffer: Framebuffer;
 
   readonly stdin: IO;
   readonly stdout: IO;
@@ -26,19 +27,9 @@ export class TTY implements Component, StdIO {
     this.tty = tty;
     this.framebuffer = framebuffer;
 
-    this.stdout = {
-      write: this.writeToBuffer.bind(this),
-      read() {
-        throw new Error("not implemented");
-      },
-    };
+    this.stdout = new FramebufferIO(this.framebuffer);
     this.stdin = this.stdout;
     this.stderr = this.stdout;
-  }
-
-  private writeToBuffer(data: byte[]): number {
-    this.framebuffer.innerText += btostr(data);
-    return data.length;
   }
 
   render(target: Target): void {
