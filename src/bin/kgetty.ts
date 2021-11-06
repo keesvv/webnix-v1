@@ -3,6 +3,7 @@ import { UserManager } from "../kernel/user";
 import { Executable } from "../lib/exec";
 import { fprint, readline, StdIO } from "../lib/io";
 import { sleep } from "../lib/thread";
+import { Keesh } from "./keesh";
 
 export class KGetty extends Executable {
   private readonly hostname = "unknown";
@@ -31,6 +32,20 @@ export class KGetty extends Executable {
     await fprint(this.stdio.stdout, "Authentication failure.\n");
   }
 
+  private async auth(): Promise<void> {
+    while (true) {
+      const [username, password] = await this.prompt();
+      const user = await this.userManager.findUser(username);
+
+      if (!user || password != user.password) {
+        await this.fail();
+        continue;
+      }
+
+      return;
+    }
+  }
+
   async main(argv: string[]): Promise<number> {
     const hostname = "unknown"; // TODO: /etc/hostname
     const release = "0.1-alpha"; // TODO: /etc/os-release
@@ -40,20 +55,9 @@ export class KGetty extends Executable {
       `\nwebnix ${release} ${hostname} ${argv[0]}\n`
     );
 
-    let authenticated = false;
-    while (!authenticated) {
-      const [username, password] = await this.prompt();
-      const user = await this.userManager.findUser(username);
-
-      if (!user || password != user.password) {
-        await this.fail();
-        continue;
-      }
-
-      authenticated = true;
+    while (true) {
+      await this.auth();
+      await new Keesh(this.stdio).main();
     }
-
-    fprint(this.stdio.stdout, "Authenticated.\n");
-    return 0;
   }
 }
