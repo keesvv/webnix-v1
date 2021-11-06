@@ -2,6 +2,7 @@ import { TTY } from "../tty";
 import { Init } from "../../bin/init";
 import { UserManager } from "../user";
 import { LocalStorageIO } from "../io/localStorage";
+import { panic } from "../panic";
 
 export async function boot() {
   const tty1 = new TTY();
@@ -14,5 +15,9 @@ export async function boot() {
     name: "Kees van Voorthuizen",
   });
 
-  new Init(tty1).main();
+  try {
+    await new Init(tty1).main();
+  } catch (error) {
+    panic();
+  }
 }
