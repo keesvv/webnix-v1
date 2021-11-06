@@ -11,6 +11,10 @@ export interface Writer {
   write(data: byte[]): Write;
 }
 
+export interface Seeker {
+  seek(offset: number): void;
+}
+
 export type IO = Reader & Writer;
 
 export interface StdIO {
