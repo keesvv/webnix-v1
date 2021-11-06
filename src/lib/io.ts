@@ -42,7 +42,7 @@ export async function readall(r: Reader): Read {
 
   while (!eof) {
     try {
-      await r.read(1);
+      buf.push(...(await r.read(512)));
     } catch (error) {
       if (error instanceof EOF) {
         eof = true;
