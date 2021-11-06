@@ -19,6 +19,8 @@ export interface StdIO {
   stderr: IO;
 }
 
+export class EOF extends Error {}
+
 export async function readline(r: Reader): Promise<string> {
   const ln: byte[] = [];
 
@@ -27,6 +29,26 @@ export async function readline(r: Reader): Promise<string> {
   }
 
   return btostr(ln.slice(0, -1));
+}
+
+// TODO: refactor
+export async function readall(r: Reader): Read {
+  let eof = false;
+  const buf: byte[] = [];
+
+  while (!eof) {
+    try {
+      await r.read(1);
+    } catch (error) {
+      if (error instanceof EOF) {
+        eof = true;
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  return buf;
 }
 
 export async function fprint(w: Writer, str: string): Promise<void> {
