@@ -13,7 +13,7 @@ export class StreamIO implements IO {
       const recv: byte[] = [];
 
       this.emitter.on("data", (data: byte[]) => {
-        if (recv.length + data.length > n) {
+        if (recv.length + data.length >= n) {
           this.emitter.off("data");
           recv.push(...data.slice(0, n - recv.length));
           return resolve(recv);
