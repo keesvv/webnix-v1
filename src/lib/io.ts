@@ -1,6 +1,9 @@
+export type Read = Promise<byte[]>;
+export type Write = Promise<number>;
+
 export interface IO {
-  read(n: number): byte[];
-  write(data: byte[]): number;
+  read(n: number): Read;
+  write(data: byte[]): Write;
 }
 
 export interface StdIO {
@@ -10,11 +13,11 @@ export interface StdIO {
 }
 
 export class NullIO implements IO {
-  read(): number[] {
+  async read(): Read {
     return [];
   }
 
-  write(): number {
+  async write(): Write {
     return 0;
   }
 }

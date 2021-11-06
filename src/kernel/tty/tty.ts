@@ -28,17 +28,17 @@ export class TTY implements Component, StdIO {
     this.framebuffer = framebuffer;
 
     this.stdout = new FramebufferIO(this.framebuffer);
-    this.stdin = this.stdout;
-    this.stderr = this.stdout;
+    this.stdin = new FramebufferIO(this.framebuffer);
+    this.stderr = new FramebufferIO(this.framebuffer);
   }
 
   render(target: Target): void {
-    target.addEventListener("keypress", (e) => {
+    target.addEventListener("keypress", async (e) => {
       if (e.key === "Enter") {
-        this.stdin.write([0x0a]); // newline
+        await this.stdin.write([0x0a]); // newline
         return;
       }
-      this.stdin.write(strtob(e.key));
+      await this.stdin.write(strtob(e.key));
     });
 
     target.appendChild(this.tty);

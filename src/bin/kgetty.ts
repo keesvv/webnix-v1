@@ -6,7 +6,7 @@ export class KGetty extends Executable {
     const hostname = "unknown"; // TODO: /etc/hostname
     const release = "0.1-alpha"; // TODO: /etc/os-release
 
-    this.stdio.stdout.write(
+    await this.stdio.stdout.write(
       strtob(`\nwebnix ${release} ${hostname} ${argv[0]}\n${hostname} login: `)
     );
     return 0;

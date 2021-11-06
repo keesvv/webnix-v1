@@ -5,7 +5,7 @@ import { KGetty } from "./kgetty";
 
 export class Init extends Executable {
   async main(): Promise<number> {
-    this.stdio.stdout.write(
+    await this.stdio.stdout.write(
       strtob(
         "Welcome to webnix!\n\n" +
           "This project is still in a VERY early development stage.\n" +
