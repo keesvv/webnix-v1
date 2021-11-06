@@ -3,7 +3,7 @@ import { btostr } from "../../lib/strconv";
 import { StreamIO } from "../io";
 
 export class FramebufferIO extends StreamIO {
-  constructor(private readonly framebuffer: HTMLDivElement) {
+  constructor(private readonly framebuffer: HTMLElement) {
     super();
   }
 
