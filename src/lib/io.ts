@@ -1,23 +1,18 @@
 export type Read = Promise<byte[]>;
 export type Write = Promise<number>;
 
-export interface IO {
+export interface Reader {
   read(n: number): Read;
+}
+
+export interface Writer {
   write(data: byte[]): Write;
 }
+
+export type IO = Reader & Writer;
 
 export interface StdIO {
   stdin: IO;
   stdout: IO;
   stderr: IO;
-}
-
-export class NullIO implements IO {
-  async read(): Read {
-    return [];
-  }
-
-  async write(): Write {
-    return 0;
-  }
 }
