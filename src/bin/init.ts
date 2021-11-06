@@ -10,7 +10,9 @@ export class Init extends Executable {
       "Welcome to webnix!\n\n" +
         "This project is still in a VERY early development stage.\n" +
         "Don't expect everything to work just yet.\n" +
-        "~keesvv\n"
+        "~keesvv\n\n" +
+        "Default credentials:\n" +
+        `Username: kees\nPassword: seek\n`
     );
 
     await sleep(120);
