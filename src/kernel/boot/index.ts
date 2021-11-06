@@ -3,8 +3,12 @@ import { Init } from "../../bin/init";
 import { UserManager } from "../user";
 import { LocalStorageIO } from "../io/localStorage";
 import { panic } from "../panic";
+import { mount } from "../fs";
+import { KFS } from "../fs/kfs/kfs";
 
 export async function boot() {
+  mount("/", new KFS());
+
   const tty1 = new TTY();
   tty1.render(document.body);
 
