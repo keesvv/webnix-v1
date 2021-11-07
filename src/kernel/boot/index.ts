@@ -5,9 +5,15 @@ import { LocalStorageIO } from "../io/localStorage";
 import { panic } from "../panic";
 import { mount } from "../fs";
 import { KFS } from "../fs/kfs/kfs";
+import { mkdir } from "../../lib/fs";
+
+export async function setupFs() {
+  mount("/", new KFS());
+  await mkdir("/bin");
+}
 
 export async function boot() {
-  mount("/", new KFS());
+  await setupFs();
 
   const tty1 = new TTY();
   tty1.render(document.body);

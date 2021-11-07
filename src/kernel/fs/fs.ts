@@ -12,4 +12,6 @@ export interface Filesystem {
   mkdir(path: string): Promise<void>;
 }
 
+export type Mountpoints = Map<string, Filesystem>;
+
 export class FileNotFoundError extends Error {}
