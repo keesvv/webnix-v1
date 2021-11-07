@@ -1,5 +1,7 @@
 import { Executable } from "../lib/exec";
-import { fprint, readline } from "../lib/io";
+import { open } from "../lib/fs";
+import { fprint, readall, readline } from "../lib/io";
+import { btostr } from "../lib/strconv";
 
 export class Keesh extends Executable {
   async main(): Promise<number> {
@@ -25,6 +27,15 @@ export class Keesh extends Executable {
       if (args[0] === "export") {
         const [key, value] = args.slice(1).join(" ").split("=");
         this.env.set(key, value);
+        continue;
+      }
+
+      // TODO: move to executables
+      if (args[0] === "cat") {
+        for (const file of args.slice(1)) {
+          const fd = await open(file, 0);
+          await fprint(this.stdio.stdout, btostr(await readall(fd)));
+        }
         continue;
       }
 
