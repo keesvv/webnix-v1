@@ -1,4 +1,5 @@
 import { Filesystem, File, FileNotFoundError } from "../fs";
+import { KFSDir } from "./kfs_dir";
 
 export class KFS implements Filesystem {
   private files: Map<string, File>;
@@ -14,5 +15,9 @@ export class KFS implements Filesystem {
     }
 
     return file;
+  }
+
+  async mkdir(path: string): Promise<void> {
+    this.files.set(path, new KFSDir());
   }
 }

@@ -32,4 +32,8 @@ export class KFSFile implements File {
   seek(offset: number): void {
     this.offset = offset;
   }
+
+  isDir(): boolean {
+    return false;
+  }
 }
