@@ -1,5 +1,7 @@
+import { FileMode, IsDirectoryError, O_CREAT } from "..";
 import { Filesystem, File, FileNotFoundError } from "../fs";
 import { KFSDir } from "./kfs_dir";
+import { KFSFile } from "./kfs_file";
 
 export class KFS implements Filesystem {
   private files: Map<string, File>;
@@ -8,11 +10,29 @@ export class KFS implements Filesystem {
     this.files = new Map();
   }
 
-  async open(fname: string): Promise<File> {
-    const file = this.files.get(fname);
+  private createFile(fname: string): File {
+    const file = new KFSFile();
+    this.files.set(fname, file);
+    return file;
+  }
+
+  async open(fname: string, mode: FileMode): Promise<File> {
+    let file = this.files.get(fname);
+
+    if ((mode & O_CREAT) === O_CREAT) {
+      file = this.createFile(fname);
+    }
+
     if (!file) {
       throw new FileNotFoundError();
     }
+
+    if (file.isDir()) {
+      throw new IsDirectoryError();
+    }
+
+    // TODO: we might need file descriptors
+    file.seek(0);
 
     return file;
   }

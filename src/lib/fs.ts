@@ -1,4 +1,10 @@
-import { FileNotFoundError, Filesystem, File, getMounts } from "../kernel/fs";
+import {
+  FileNotFoundError,
+  Filesystem,
+  File,
+  getMounts,
+  FileMode,
+} from "../kernel/fs";
 
 function locateFs(fname: string): Filesystem {
   for (const [mountpoint, fs] of getMounts()) {
@@ -10,8 +16,8 @@ function locateFs(fname: string): Filesystem {
   throw new FileNotFoundError();
 }
 
-export async function open(fname: string): Promise<File> {
-  return locateFs(fname).open(fname);
+export async function open(fname: string, mode: FileMode): Promise<File> {
+  return locateFs(fname).open(fname, mode);
 }
 
 export async function mkdir(path: string): Promise<void> {

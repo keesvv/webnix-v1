@@ -32,6 +32,8 @@ export class TTY implements Component, StdIO {
 
   render(target: Target): void {
     target.addEventListener("keypress", async (e) => {
+      e.preventDefault();
+
       if (e.key === "Enter") {
         await this.stdin.write([0x0a]); // newline
         return;
