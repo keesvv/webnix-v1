@@ -1,11 +1,13 @@
 import { Component, Target } from "../../lib/component";
 import { IO, StdIO } from "../../lib/io";
 import { strtob } from "../../lib/strconv";
+import { Termios, TermiosAttrs } from "../../lib/termios";
 import { FramebufferIO } from "./framebuffer";
 import "./tty.scss";
 
-export class TTY implements Component, StdIO {
+export class TTY implements Component, StdIO, Termios {
   private readonly tty: HTMLDivElement;
+  readonly attrs: TermiosAttrs;
 
   readonly stdin: IO;
   readonly stdout: IO;
@@ -24,10 +26,15 @@ export class TTY implements Component, StdIO {
     cursor.classList.add("cursor");
 
     this.tty = tty;
+    this.attrs = { echo: true };
 
-    this.stdout = new FramebufferIO(framebuffer);
-    this.stdin = new FramebufferIO(framebuffer);
-    this.stderr = new FramebufferIO(framebuffer);
+    this.stdout = new FramebufferIO(this, framebuffer);
+    this.stdin = new FramebufferIO(this, framebuffer);
+    this.stderr = new FramebufferIO(this, framebuffer);
+  }
+
+  setattr(attrs: TermiosAttrs): void {
+    Object.assign(this.attrs, attrs);
   }
 
   render(target: Target): void {
