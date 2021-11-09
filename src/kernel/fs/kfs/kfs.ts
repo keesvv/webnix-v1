@@ -42,6 +42,11 @@ export class KFS implements Filesystem {
   }
 
   async readdir(path: string): Promise<FileInfo[]> {
-    return Array.from(this.files.keys()).filter((i) => i.startsWith(path));
+    return Array.from(this.files.keys())
+      .filter((i) => i.startsWith(path))
+      .map((i) => ({
+        name: i,
+        mode: 0,
+      }));
   }
 }

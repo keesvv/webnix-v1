@@ -1,7 +1,9 @@
 import { IO, Seeker } from "../../lib/io";
 
-// TODO: we need a proper FileInfo interface
-export type FileInfo = string;
+export interface FileInfo {
+  name: string;
+  mode: FileMode;
+}
 
 export interface File extends IO, Seeker {
   size(): number;
