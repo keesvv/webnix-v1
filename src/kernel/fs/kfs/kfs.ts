@@ -1,4 +1,4 @@
-import { FileMode, IsDirectoryError, O_CREAT } from "..";
+import { FileInfo, FileMode, IsDirectoryError, O_CREAT } from "..";
 import { Filesystem, File, FileNotFoundError } from "../fs";
 import { KFSDir } from "./kfs_dir";
 import { KFSFile } from "./kfs_file";
@@ -39,5 +39,9 @@ export class KFS implements Filesystem {
 
   async mkdir(path: string): Promise<void> {
     this.files.set(path, new KFSDir());
+  }
+
+  async readdir(path: string): Promise<FileInfo[]> {
+    return Array.from(this.files.keys()).filter((i) => i.startsWith(path));
   }
 }

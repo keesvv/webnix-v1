@@ -4,6 +4,7 @@ import {
   File,
   getMounts,
   FileMode,
+  FileInfo,
 } from "../kernel/fs";
 
 function locateFs(fname: string): Filesystem {
@@ -22,4 +23,8 @@ export async function open(fname: string, mode: FileMode): Promise<File> {
 
 export async function mkdir(path: string): Promise<void> {
   return locateFs(path).mkdir(path);
+}
+
+export async function readdir(path: string): Promise<FileInfo[]> {
+  return locateFs(path).readdir(path);
 }
