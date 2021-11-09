@@ -4,7 +4,7 @@ import { UserManager } from "../user";
 import { LocalStorageIO } from "../io/localStorage";
 import { panic } from "../panic";
 import { mount, O_CREAT } from "../fs";
-import { KFS } from "../fs/kfs/kfs";
+import { KFS } from "../fs/kfs";
 import { mkdir, open } from "../../lib/fs";
 import { strtob } from "../../lib/strconv";
 
