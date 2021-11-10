@@ -1,11 +1,11 @@
 import { Component, Target } from "../../lib/component";
-import { IO, StdIO } from "../../lib/io";
+import { IO } from "../../lib/io";
 import { strtob } from "../../lib/strconv";
-import { Termios, TermiosAttrs } from "../../lib/termios";
+import { Terminal, TermiosAttrs } from "../../lib/termios";
 import { FramebufferIO } from "./framebuffer";
 import "./tty.scss";
 
-export class TTY implements Component, StdIO, Termios {
+export class TTY implements Component, Terminal {
   private readonly tty: HTMLDivElement;
   readonly attrs: TermiosAttrs;
 
