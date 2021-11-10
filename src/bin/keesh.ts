@@ -1,3 +1,4 @@
+import { exec } from "../kernel/exec";
 import { Executable } from "../lib/exec";
 import { open } from "../lib/fs";
 import { fprint, readall, readline } from "../lib/io";
@@ -39,7 +40,12 @@ export class Keesh extends Executable {
         continue;
       }
 
-      fprint(this.stdio.stderr, "not implemented\n");
+      try {
+        await exec(args[0], args.slice(1), this.stdio, this.env);
+      } catch (error) {
+        fprint(this.stdio.stderr, "invalid executable\n");
+        continue;
+      }
     }
   }
 }
