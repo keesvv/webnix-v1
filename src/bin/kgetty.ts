@@ -3,12 +3,14 @@ import { UserManager } from "../kernel/user";
 import { Executable } from "../lib/exec";
 import { fprint, readline, StdIO } from "../lib/io";
 import { Environment } from "../lib/process";
+import { getpass, getterm, Terminal } from "../lib/termios";
 import { sleep } from "../lib/thread";
 import { Keesh } from "./keesh";
 
 export class KGetty extends Executable {
   private readonly hostname = "unknown";
   private userManager: UserManager;
+  private term!: Terminal;
 
   constructor(readonly stdio: StdIO) {
     super(stdio);
@@ -23,7 +25,7 @@ export class KGetty extends Executable {
     }
 
     await fprint(this.stdio.stdout, `password for ${username}: `);
-    const password = await readline(this.stdio.stdin);
+    const password = await getpass(this.term);
 
     return [username, password];
   }
@@ -50,6 +52,13 @@ export class KGetty extends Executable {
   async main(argv: string[]): Promise<number> {
     const hostname = "unknown"; // TODO: /etc/hostname
     const release = "0.1-alpha"; // TODO: /etc/os-release
+
+    try {
+      this.term = getterm(this.stdio);
+    } catch (error) {
+      await fprint(this.stdio.stderr, "error: not a terminal");
+      return 1;
+    }
 
     await fprint(
       this.stdio.stdout,
