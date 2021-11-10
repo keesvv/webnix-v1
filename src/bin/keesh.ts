@@ -1,11 +1,48 @@
 import { exec } from "../kernel/exec";
+import { FileNotFoundError } from "../kernel/fs";
 import { Executable } from "../lib/exec";
 import { open } from "../lib/fs";
 import { fprint, readall, readline } from "../lib/io";
 import { btostr } from "../lib/strconv";
 
 export class Keesh extends Executable {
+  private parsePath(): string[] {
+    return this.env.get("PATH")!.split(":");
+  }
+
+  private async locateBinary(input: string): Promise<string> {
+    for (const pathEntry of ["", ...this.parsePath()]) {
+      try {
+        let fullPath = input;
+
+        if (pathEntry !== "") {
+          fullPath = pathEntry + "/" + input;
+        }
+
+        await open(fullPath, 0);
+        return fullPath;
+      } catch (error) {
+        if (error instanceof FileNotFoundError) {
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    throw new FileNotFoundError();
+  }
+
+  private async execute(argv: string[]) {
+    try {
+      await exec(argv[0], argv.slice(1), this.stdio, this.env);
+    } catch (error) {
+      fprint(this.stdio.stderr, "invalid executable\n");
+    }
+  }
+
   async main(): Promise<number> {
+    this.env.set("PATH", "/bin");
+
     while (true) {
       fprint(this.stdio.stdout, this.env.get("PS1") ?? "");
       const ln = this.env.expand(await readline(this.stdio.stdin));
@@ -40,12 +77,16 @@ export class Keesh extends Executable {
         continue;
       }
 
+      let execPath: string;
+
       try {
-        await exec(args[0], args.slice(1), this.stdio, this.env);
+        execPath = await this.locateBinary(args[0]);
       } catch (error) {
-        fprint(this.stdio.stderr, "invalid executable\n");
+        await fprint(this.stdio.stderr, "command not found\n");
         continue;
       }
+
+      await this.execute([execPath, ...args.slice(1)]);
     }
   }
 }
