@@ -1,3 +1,4 @@
+import { exec } from "../kernel/exec";
 import { LocalStorageIO } from "../kernel/io/localStorage";
 import { UserManager } from "../kernel/user";
 import { Executable } from "../lib/exec";
@@ -5,7 +6,6 @@ import { fprint, readline, StdIO } from "../lib/io";
 import { Environment } from "../lib/process";
 import { getpass, getterm, Terminal } from "../lib/termios";
 import { sleep } from "../lib/thread";
-import { Keesh } from "./keesh";
 
 export class KGetty extends Executable {
   private readonly hostname = "unknown";
@@ -67,7 +67,12 @@ export class KGetty extends Executable {
 
     while (true) {
       await this.auth();
-      await new Keesh(this.stdio, new Environment([["PS1", "$ "]])).main();
+      await exec(
+        "/bin/keesh",
+        [],
+        this.stdio,
+        new Environment([["PS1", "$ "]])
+      );
     }
   }
 }

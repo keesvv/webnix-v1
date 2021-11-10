@@ -7,7 +7,7 @@ import { mount, O_CREAT } from "../fs";
 import { KFS } from "../fs/kfs";
 import { mkdir, open } from "../../lib/fs";
 import { strtob } from "../../lib/strconv";
-import { ExecCtor, writeExecutable } from "../exec";
+import { exec, ExecCtor, writeExecutable } from "../exec";
 import { Keesh } from "../../bin/keesh";
 import { KGetty } from "../../bin/kgetty";
 
@@ -47,7 +47,7 @@ export async function boot() {
       name: "Kees van Voorthuizen",
     });
 
-    await new Init(tty1).main();
+    await exec("/bin/init", [], tty1);
   } catch (error) {
     panic();
   }

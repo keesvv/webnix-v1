@@ -1,7 +1,7 @@
+import { exec } from "../kernel/exec";
 import { Executable } from "../lib/exec";
 import { fprint } from "../lib/io";
 import { sleep } from "../lib/thread";
-import { KGetty } from "./kgetty";
 
 export class Init extends Executable {
   async main(): Promise<number> {
@@ -16,7 +16,7 @@ export class Init extends Executable {
     );
 
     await sleep(120);
-    await new KGetty(this.stdio).main(["tty1"]);
+    await exec("/bin/kgetty", ["tty1"], this.stdio, this.env);
     return 0;
   }
 }
