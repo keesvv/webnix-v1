@@ -1,4 +1,4 @@
-import { Read, Write } from "../../../lib/io";
+import { Read, Write } from "@lib/io";
 import { Directory } from "../fs";
 
 export class KFSDir implements Directory {

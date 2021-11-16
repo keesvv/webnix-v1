@@ -1,15 +1,16 @@
-import { TTY } from "../tty";
-import { Init } from "../../bin/init";
-import { UserManager } from "../user";
-import { LocalStorageIO } from "../io/localStorage";
-import { panic } from "../panic";
-import { mount, O_CREAT } from "../fs";
-import { KFS } from "../fs/kfs";
-import { mkdir, open } from "../../lib/fs";
-import { strtob } from "../../lib/strconv";
-import { exec, ExecCtor, writeExecutable } from "../exec";
-import { Keesh } from "../../bin/keesh";
-import { KGetty } from "../../bin/kgetty";
+import "./main.scss";
+import { TTY } from "../kernel/tty";
+import { Init } from "./bin/init";
+import { UserManager } from "../kernel/user";
+import { LocalStorageIO } from "../kernel/io/localStorage";
+import { panic } from "../kernel/panic";
+import { mount, O_CREAT } from "../kernel/fs";
+import { KFS } from "../kernel/fs/kfs";
+import { mkdir, open } from "./lib/fs";
+import { strtob } from "./lib/strconv";
+import { exec, ExecCtor, writeExecutable } from "../kernel/exec";
+import { Keesh } from "./bin/keesh";
+import { KGetty } from "./bin/kgetty";
 
 export async function registerBinaries(m: Map<string, ExecCtor>) {
   for (const exec of m.entries()) {
@@ -52,3 +53,5 @@ export async function boot() {
     panic();
   }
 }
+
+boot();

@@ -5,7 +5,7 @@ import {
   getMounts,
   FileMode,
   FileInfo,
-} from "../kernel/fs";
+} from "../../kernel/fs";
 
 function locateFs(fname: string): Filesystem {
   for (const [mountpoint, fs] of getMounts()) {

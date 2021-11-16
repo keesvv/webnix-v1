@@ -1,7 +1,7 @@
-import { Component, Target } from "../../lib/component";
-import { IO } from "../../lib/io";
-import { strtob } from "../../lib/strconv";
-import { Terminal, TermiosAttrs } from "../../lib/termios";
+import { Component, Target } from "@lib/component";
+import { IO } from "@lib/io";
+import { strtob } from "@lib/strconv";
+import { Terminal, TermiosAttrs } from "@lib/termios";
 import { FramebufferIO } from "./framebuffer";
 import "./tty.scss";
 

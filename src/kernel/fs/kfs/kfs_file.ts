@@ -1,4 +1,4 @@
-import { EOF, Read, Write } from "../../../lib/io";
+import { EOF, Read, Write } from "@lib/io";
 import { File } from "../fs";
 
 export class KFSFile implements File {

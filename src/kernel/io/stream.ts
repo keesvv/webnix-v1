@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { IO, Read, Write } from "../../lib/io";
+import { IO, Read, Write } from "@lib/io";
 
 export class StreamIO implements IO {
   private emitter: EventEmitter<"data">;

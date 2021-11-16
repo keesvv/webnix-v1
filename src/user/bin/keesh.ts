@@ -1,5 +1,5 @@
-import { exec } from "../kernel/exec";
-import { FileNotFoundError } from "../kernel/fs";
+import { exec } from "../../kernel/exec";
+import { FileNotFoundError } from "../../kernel/fs";
 import { Executable } from "../lib/exec";
 import { open } from "../lib/fs";
 import { fprint, readall, readline } from "../lib/io";

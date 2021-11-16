@@ -1,4 +1,4 @@
-import { exec } from "../kernel/exec";
+import { exec } from "../../kernel/exec";
 import { Executable } from "../lib/exec";
 import { fprint } from "../lib/io";
 import { sleep } from "../lib/thread";
