@@ -35,7 +35,6 @@ export async function readline(r: Reader): Promise<string> {
   return btostr(ln.slice(0, -1));
 }
 
-// TODO: refactor
 export async function readall(r: Reader): Read {
   let eof = false;
   const buf: byte[] = [];
@@ -44,11 +43,10 @@ export async function readall(r: Reader): Read {
     try {
       buf.push(...(await r.read(512)));
     } catch (error) {
-      if (error instanceof EOF) {
-        eof = true;
-      } else {
+      if (!(error instanceof EOF)) {
         throw error;
       }
+      eof = true;
     }
   }
 
