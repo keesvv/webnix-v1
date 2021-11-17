@@ -1,7 +1,7 @@
 import "./main.scss";
 import { TTY } from "../kernel/tty";
 import { Init } from "./bin/init";
-import { UserManager } from "../kernel/user";
+import { UserManager } from "@lib/user/manager";
 import { LocalStorageIO } from "../kernel/io/localStorage";
 import { panic } from "../kernel/panic";
 import { mount, O_CREAT } from "../kernel/fs";

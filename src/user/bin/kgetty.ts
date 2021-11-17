@@ -1,6 +1,6 @@
 import { exec } from "../../kernel/exec";
 import { LocalStorageIO } from "../../kernel/io/localStorage";
-import { UserManager } from "../../kernel/user";
+import { UserManager } from "@lib/user/manager";
 import { Executable } from "../lib/exec";
 import { fprint, readline, StdIO } from "../lib/io";
 import { Environment } from "../lib/process";

@@ -1,4 +1,4 @@
-import { User } from ".";
+import { User } from "../../../kernel/user";
 import { IO, readall, Seeker } from "@lib/io";
 import { btostr, strtob } from "@lib/strconv";
 
