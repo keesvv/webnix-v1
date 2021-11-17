@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint 'src/**/*.ts'"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.1",
