@@ -1,4 +1,4 @@
-import { EOF, IO, Read, Seeker, Write } from "@lib/io";
+import { EOF, IO, Read, Seeker, Write } from ".";
 import { btostr, strtob } from "@lib/strconv";
 
 export class LocalStorageIO implements IO, Seeker {

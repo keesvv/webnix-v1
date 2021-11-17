@@ -1,4 +1,4 @@
-import { IO, Read, Write } from "@lib/io";
+import { IO, Read, Write } from ".";
 
 export class NullIO implements IO {
   async read(): Read {

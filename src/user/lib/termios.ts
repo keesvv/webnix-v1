@@ -1,4 +1,5 @@
-import { readline, StdIO } from "./io";
+import { StdIO } from "../../kernel/io";
+import { readline } from "./ioutil";
 
 export type TermiosAttrs = Partial<{
   echo: boolean;

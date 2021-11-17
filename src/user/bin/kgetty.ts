@@ -2,10 +2,11 @@ import { exec } from "../../kernel/exec";
 import { LocalStorageIO } from "../../kernel/io/localStorage";
 import { UserManager } from "@lib/user/manager";
 import { Executable } from "../lib/exec";
-import { fprint, readline, StdIO } from "../lib/io";
+import { fprint, readline } from "../lib/ioutil";
 import { Environment } from "../lib/process";
 import { getpass, getterm, Terminal } from "../lib/termios";
 import { sleep } from "../lib/thread";
+import { StdIO } from "../../kernel/io";
 
 export class KGetty extends Executable {
   private readonly hostname = "unknown";

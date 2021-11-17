@@ -1,4 +1,4 @@
-import { IO, Seeker } from "@lib/io";
+import { IO, Seeker } from "../io";
 
 export interface FileInfo {
   name: string;

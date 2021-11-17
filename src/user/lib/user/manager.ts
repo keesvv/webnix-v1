@@ -1,6 +1,7 @@
 import { User } from "../../../kernel/user";
-import { IO, readall, Seeker } from "@lib/io";
+import { readall } from "@lib/ioutil";
 import { btostr, strtob } from "@lib/strconv";
+import { IO, Seeker } from "../../../kernel/io";
 
 export class UserManager {
   constructor(private store: IO & Seeker) {}

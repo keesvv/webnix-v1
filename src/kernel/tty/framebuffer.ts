@@ -1,7 +1,6 @@
 import { TTY } from ".";
-import { Write } from "@lib/io";
 import { btostr } from "@lib/strconv";
-import { StreamIO } from "../io";
+import { StreamIO, Write } from "../io";
 
 export class FramebufferIO extends StreamIO {
   constructor(
