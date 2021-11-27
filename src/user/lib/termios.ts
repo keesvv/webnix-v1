@@ -1,17 +1,5 @@
-import { StdIO } from "../../kernel/io";
+import { Terminal } from "../../kernel/tty/termios";
 import { readline } from "./ioutil";
-
-export type TermiosAttrs = Partial<{
-  echo: boolean;
-}>;
-
-export interface Termios {
-  setattr(attrs: TermiosAttrs): void;
-}
-
-export type Terminal = StdIO & Termios;
-
-export class NoTerminalError extends Error {}
 
 export async function getpass(term: Terminal): Promise<string> {
   // Disable echo for security
@@ -23,14 +11,4 @@ export async function getpass(term: Terminal): Promise<string> {
   term.setattr({ echo: true });
   term.stdin.write([0x0a]);
   return pass;
-}
-
-export function getterm(stdio: StdIO): Terminal {
-  const term = stdio as StdIO & Partial<Termios>;
-
-  if (!term.setattr) {
-    throw new NoTerminalError();
-  }
-
-  return term as Terminal;
 }

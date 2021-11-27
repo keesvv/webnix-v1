@@ -1,7 +1,7 @@
 import { Component, Target } from "@lib/component";
 import { IO } from "../io";
 import { strtob } from "@lib/strconv";
-import { Terminal, TermiosAttrs } from "@lib/termios";
+import { Terminal, TermiosAttrs } from "./termios";
 import { FramebufferIO } from "./framebuffer";
 import "./tty.scss";
 

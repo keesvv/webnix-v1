@@ -4,7 +4,8 @@ import { UserManager } from "@lib/user/manager";
 import { Executable } from "../lib/exec";
 import { fprint, readline } from "../lib/ioutil";
 import { Environment } from "../lib/process";
-import { getpass, getterm, Terminal } from "../lib/termios";
+import { getterm, Terminal } from "../../kernel/tty/termios";
+import { getpass } from "@lib/termios";
 import { sleep } from "../lib/thread";
 import { StdIO } from "../../kernel/io";
 
