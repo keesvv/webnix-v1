@@ -7,16 +7,19 @@ export class UserManager {
   constructor(private store: IO & Seeker) {}
 
   serialize(user: User): byte[] {
-    return strtob([user.username, user.password, user.name].join(":"));
+    return strtob(
+      [user.username, user.password, user.name, user.shell].join(":")
+    );
   }
 
   deserialize(s: string): User {
-    const [username, password, name] = s.split(":");
+    const [username, password, name, shell] = s.split(":");
 
     return {
       username,
       password,
       name,
+      shell,
     };
   }
 
