@@ -28,3 +28,10 @@ export async function mkdir(path: string): Promise<void> {
 export async function readdir(path: string): Promise<FileInfo[]> {
   return locateFs(path).readdir(path);
 }
+
+export async function makeroot(): Promise<void> {
+  // FHS-like directory structure
+  // TODO: finish this up
+  await mkdir("/bin");
+  await mkdir("/etc");
+}

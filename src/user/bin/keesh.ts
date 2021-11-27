@@ -41,6 +41,7 @@ export class Keesh extends Executable {
   }
 
   async main(): Promise<number> {
+    this.env.set("PS1", "$ ");
     this.env.set("PATH", "/bin");
 
     while (true) {

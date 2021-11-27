@@ -2,29 +2,40 @@ import "./main.scss";
 import { TTY } from "../kernel/tty";
 import { Init } from "./bin/init";
 import { UserManager } from "@lib/user/manager";
-import { LocalStorageIO } from "../kernel/io/localStorage";
 import { panic } from "../kernel/panic";
 import { mount, O_CREAT } from "../kernel/fs";
 import { KFS } from "../kernel/fs/kfs";
-import { mkdir, open } from "./lib/fs";
+import { open, makeroot } from "./lib/fs";
 import { strtob } from "./lib/strconv";
 import { exec, ExecCtor, writeExecutable } from "../kernel/exec";
 import { Keesh } from "./bin/keesh";
 import { KGetty } from "./bin/kgetty";
+import { writeall } from "@lib/ioutil";
 
 export async function registerBinaries(m: Map<string, ExecCtor>) {
-  for (const exec of m.entries()) {
-    const f = await open(exec[0], O_CREAT);
-    writeExecutable(f, exec[1]);
+  for (const [fname, ctor] of m.entries()) {
+    const f = await open(fname, O_CREAT);
+    writeExecutable(f, ctor);
   }
 }
 
 export async function setupFs() {
+  // Mount root
   mount("/", new KFS());
-  await mkdir("/bin");
 
-  const hello = await open("/hello.txt", O_CREAT);
-  hello.write(strtob("Hello, world!\n"));
+  // Set up the root filesystem
+  await makeroot();
+
+  // Put all binaries in /bin
+  await registerBinaries(
+    new Map<string, ExecCtor>([
+      ["/bin/init", Init],
+      ["/bin/keesh", Keesh],
+      ["/bin/kgetty", KGetty],
+    ])
+  );
+
+  await writeall("/hello.txt", strtob("Hello, world!\n"));
 }
 
 export async function boot() {
@@ -33,19 +44,13 @@ export async function boot() {
     tty1.render(document.body);
 
     await setupFs();
-    await registerBinaries(
-      new Map<string, ExecCtor>([
-        ["/bin/init", Init],
-        ["/bin/keesh", Keesh],
-        ["/bin/kgetty", KGetty],
-      ])
-    );
 
-    const userManager = new UserManager(new LocalStorageIO("users"));
+    const userManager = new UserManager(await open("/etc/passwd", O_CREAT));
     await userManager.addUser({
       username: "kees",
       password: "seek",
       name: "Kees van Voorthuizen",
+      shell: "/bin/keesh",
     });
 
     await exec("/bin/init", [], tty1);
