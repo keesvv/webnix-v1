@@ -1,4 +1,6 @@
+import { O_CREAT } from "../../kernel/fs";
 import { EOF, Read, Reader, Writer } from "../../kernel/io";
+import { open } from "./fs";
 import { btostr, strtob } from "./strconv";
 
 export async function readline(r: Reader): Promise<string> {
@@ -27,6 +29,11 @@ export async function readall(r: Reader): Read {
   }
 
   return buf;
+}
+
+export async function writeall(fname: string, b: byte[]) {
+  const f = await open(fname, O_CREAT);
+  await f.write(b);
 }
 
 export async function fprint(w: Writer, str: string): Promise<void> {
