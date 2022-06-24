@@ -1,8 +1,8 @@
-import { exec } from "../kernel/exec";
-import { FileNotFoundError } from "../kernel/fs";
+import { exec } from "../../kernel/exec";
+import { FileNotFoundError } from "../../kernel/fs";
 import { Executable } from "../lib/exec";
 import { open } from "../lib/fs";
-import { fprint, readall, readline } from "../lib/io";
+import { fprint, readall, readline } from "../lib/ioutil";
 import { btostr } from "../lib/strconv";
 
 export class Keesh extends Executable {
@@ -41,6 +41,7 @@ export class Keesh extends Executable {
   }
 
   async main(): Promise<number> {
+    this.env.set("PS1", "$ ");
     this.env.set("PATH", "/bin");
 
     while (true) {

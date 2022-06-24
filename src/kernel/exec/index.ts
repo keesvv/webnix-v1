@@ -1,10 +1,11 @@
-import { Executable } from "../../lib/exec";
-import { btostr, strtob } from "../../lib/strconv";
+import { Executable } from "@lib/exec";
+import { btostr, strtob } from "@lib/strconv";
 import { File } from "../fs";
 import { v4 as uuidv4 } from "uuid";
-import { open } from "../../lib/fs";
-import { readall, StdIO } from "../../lib/io";
-import { Environment } from "../../lib/process";
+import { open } from "@lib/fs";
+import { readall } from "@lib/ioutil";
+import { Environment } from "@lib/process";
+import { StdIO } from "../io";
 
 export type ExecCtor = { new (stdio: StdIO, env?: Environment): Executable };
 

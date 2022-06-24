@@ -1,4 +1,4 @@
-import { StdIO } from "./io";
+import { StdIO } from "../../kernel/io";
 import { Environment } from "./process";
 
 // TODO: separate process management from executables

@@ -1,6 +1,6 @@
-import { exec } from "../kernel/exec";
+import { exec } from "../../kernel/exec";
 import { Executable } from "../lib/exec";
-import { fprint } from "../lib/io";
+import { fprint } from "../lib/ioutil";
 import { sleep } from "../lib/thread";
 
 export class Init extends Executable {

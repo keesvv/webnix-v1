@@ -1,20 +1,22 @@
-import { exec } from "../kernel/exec";
-import { LocalStorageIO } from "../kernel/io/localStorage";
-import { UserManager } from "../kernel/user";
+import { exec } from "../../kernel/exec";
+import { UserManager } from "@lib/user/manager";
 import { Executable } from "../lib/exec";
-import { fprint, readline, StdIO } from "../lib/io";
+import { fprint, readline } from "../lib/ioutil";
 import { Environment } from "../lib/process";
-import { getpass, getterm, Terminal } from "../lib/termios";
+import { getterm, Terminal } from "../../kernel/tty/termios";
+import { getpass } from "@lib/termios";
 import { sleep } from "../lib/thread";
+import { StdIO } from "../../kernel/io";
+import { open } from "@lib/fs";
+import { User } from "../../kernel/user";
 
 export class KGetty extends Executable {
   private readonly hostname = "unknown";
-  private userManager: UserManager;
+  private userManager!: UserManager;
   private term!: Terminal;
 
   constructor(readonly stdio: StdIO) {
     super(stdio);
-    this.userManager = new UserManager(new LocalStorageIO("users"));
   }
 
   private async prompt(): Promise<[string, string]> {
@@ -35,7 +37,7 @@ export class KGetty extends Executable {
     await fprint(this.stdio.stdout, "Authentication failure.\n");
   }
 
-  private async auth(): Promise<void> {
+  private async auth(): Promise<User> {
     while (true) {
       const [username, password] = await this.prompt();
       const user = await this.userManager.findUser(username);
@@ -45,13 +47,15 @@ export class KGetty extends Executable {
         continue;
       }
 
-      return;
+      return user;
     }
   }
 
   async main(argv: string[]): Promise<number> {
     const hostname = "unknown"; // TODO: /etc/hostname
     const release = "0.1-alpha"; // TODO: /etc/os-release
+
+    this.userManager = new UserManager(await open("/etc/passwd", 0));
 
     try {
       this.term = getterm(this.stdio);
@@ -66,13 +70,8 @@ export class KGetty extends Executable {
     );
 
     while (true) {
-      await this.auth();
-      await exec(
-        "/bin/keesh",
-        [],
-        this.stdio,
-        new Environment([["PS1", "$ "]])
-      );
+      const user = await this.auth();
+      await exec(user.shell, [], this.stdio, new Environment());
     }
   }
 }

@@ -12,4 +12,17 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {},
+  overrides: [
+    {
+      files: ["src/kernel/**/*.ts"],
+      rules: {
+        "no-restricted-imports": [
+          "error",
+          {
+            patterns: ["@lib/*"],
+          },
+        ],
+      },
+    },
+  ],
 };
